@@ -29,6 +29,8 @@ describe("insight faucet", () => {
   );
   let testToken: PublicKey;
 
+  const user = Keypair.generate();
+
   beforeAll(async () => {
     await airdropIfRequired(
       connection,
@@ -85,8 +87,52 @@ describe("insight faucet", () => {
     let tx: string | null = null;
     try {
       tx = await program.methods
-        .initialize()
+        .initialize(new anchor.BN(5_000_000))
         .accounts({
+          token: testToken,
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .signers([master])
+        .rpc();
+    } catch (error) {
+      console.log(error);
+    }
+
+    expect(tx).toBeTruthy();
+  });
+
+  it("send tokens to vault", async () => {
+    const [stateInfoAddress] = PublicKey.findProgramAddressSync(
+      [Buffer.from("state_info"), testToken.toBuffer()],
+      program.programId
+    );
+
+    const vault = await getAssociatedTokenAddress(
+      testToken,
+      stateInfoAddress,
+      true,
+      TOKEN_PROGRAM_ID
+    );
+
+    const transactionSignature = await mintTo(
+      connection,
+      master,
+      testToken,
+      vault,
+      master,
+      10_000_000
+    );
+
+    expect(transactionSignature).toBeTruthy();
+  });
+
+  it("claim", async () => {
+    let tx: string | null = null;
+    try {
+      tx = await program.methods
+        .claim()
+        .accounts({
+          to: user.publicKey,
           token: testToken,
           tokenProgram: TOKEN_PROGRAM_ID,
         })

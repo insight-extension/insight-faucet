@@ -9,12 +9,14 @@ crate-type = ["cdylib", "lib"]
 name = "insight_faucet"
 
 [features]
-default = []
+default = ["devnet"]
 cpi = ["no-entrypoint"]
 no-entrypoint = []
 no-idl = []
 no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+localnet = []
+devnet = []
 
 [dependencies]
 anchor-lang = { version = "0.30.1", features = ["init-if-needed"]}
