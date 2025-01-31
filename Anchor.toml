@@ -7,11 +7,17 @@ skip-lint = false
 [programs.localnet]
 insight_faucet = "HhaFfLGyd1SsyiCsuZQxHbgn18DU3jtHM9DrjZvuMPMN"
 
+[programs.devnet]
+insight_faucet = "HhaFfLGyd1SsyiCsuZQxHbgn18DU3jtHM9DrjZvuMPMN"
+
+[programs.mainnet]
+insight_faucet = "HhaFfLGyd1SsyiCsuZQxHbgn18DU3jtHM9DrjZvuMPMN"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
