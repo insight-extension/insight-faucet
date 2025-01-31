@@ -22,7 +22,7 @@ pub mod insight_faucet {
     }
 
     pub fn claim(ctx: Context<Claim>) -> Result<()> {
-        #[cfg(any(feature = "devnet"))]
+        #[cfg(feature = "devnet")]
         {
             if ctx.accounts.token.key() != USDC_MINT {
                 return Err(ErrorCode::InvalidToken.into());
